@@ -14,9 +14,11 @@ type Img = {
 export default function Home() {
   const [query, setQuery] = useState("");
   const [images, setImages] = useState<Img[]>([]);
+  const [loading, setLoading] = useState(false);
 
   async function fetchImages(e?: React.FormEvent<HTMLFormElement>) {
     e?.preventDefault();
+    setLoading(true);
 
     try {
       const res = await api.get("/images", {
@@ -28,9 +30,12 @@ export default function Home() {
       setImages(images);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
 
+  // fetch images on mount
   useEffect(() => {
     fetchImages();
   }, []);
@@ -63,25 +68,30 @@ export default function Home() {
         </div>
       </form>
       <section className="sm:columns-2 w-auto max-w-4xl mt-8 md:columns-3 gap-8 [column-fill:_balance] box-border mx-auto ">
-        {images.map((image, idx) => (
-          <div
-            className="group relative my-8 flex flex-col items-center justify-center flex-nowrap hover:cursor-pointer"
-            key={idx}
-            onClick={() => window.open(image.link, "_blank")}
-          >
-            <Image
-              src={image.link}
-              alt={image.title}
-              width={300}
-              height={300}
-              className="rounded-md"
-            />
-            <div className="group-hover:block hidden bg-gradient-to-b from-transparent to-black/70 absolute w-full h-full"></div>
-            <span className="group-hover:flex absolute w-full overflow-clip hidden bottom-0 text-sm text-center mt-2">
-              {image.title || "No title"}
-            </span>
-          </div>
-        ))}
+        {loading ? (
+          <div className="w-full ">Loading...</div>
+        ) : (
+          images.map((image, idx) => (
+            <div
+              className="group relative my-8 flex flex-col items-center justify-center flex-nowrap hover:cursor-pointer"
+              key={idx}
+              onClick={() => window.open(image.link, "_blank")}
+            >
+              <Image
+                src={image.link}
+                alt={image.title}
+                width={300}
+                height={300}
+                className="rounded-md"
+              />
+              {/* Overlay */}
+              <div className="group-hover:block hidden bg-gradient-to-b from-transparent to-black/70 absolute w-full h-full"></div>
+              <span className="group-hover:block absolute w-full overflow-clip hidden bottom-0 text-sm text-center mt-2">
+                {image.title || "No title"}
+              </span>
+            </div>
+          ))
+        )}
       </section>
     </main>
   );
