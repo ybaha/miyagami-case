@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,6 +23,7 @@ export default function Home() {
     try {
       const res = await api.get("/images", {
         params: {
+          // split query by space and join with comma and pass to api
           tags: query.split(" ").join(","),
         },
       });
@@ -44,6 +45,7 @@ export default function Home() {
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-2 sm:p-24 ${inter.className}`}
     >
+      {/* Used form for better accessibility */}
       <form
         className="flex items-center flex-col justify-center pt-16"
         onSubmit={(e) => fetchImages(e)}

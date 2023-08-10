@@ -1,19 +1,18 @@
-import express, { Application, Request, Response } from "express";
-import { parseStringPromise } from "xml2js";
+import express, { Application } from "express";
 import "dotenv/config";
 import router from "./routes";
-import bodyParser from "body-parser";
 import cors from "cors";
+// Used MVC pattern for potential future scalability,
+// even though it was an overkill for this project
 
 const app: Application = express();
-
 const PORT = 3001;
 
+// disable cors
 app.use(cors());
 
-app.use(express.json());
-app.use(bodyParser.json());
-
+// use routes under /api
+// this way we can add versioning to our API in future if needed
 app.use("/api", router);
 
 app.listen(PORT, () => {
