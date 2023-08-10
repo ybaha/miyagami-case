@@ -48,7 +48,9 @@ export default function Home() {
         className="flex items-center flex-col justify-center pt-16"
         onSubmit={(e) => fetchImages(e)}
       >
-        <h1 className="text-4xl font-bold text-center">Flickr Public Images</h1>
+        <h1 className="font-extrabold text-transparent text-4xl md:text-6xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 text-center py-2">
+          Flickr Public Images
+        </h1>
         <div className="flex w-full sm:w-[400px] gap-2 mt-8">
           <input
             type="text"
@@ -67,13 +69,13 @@ export default function Home() {
           </button>
         </div>
       </form>
-      <section className="sm:columns-2 w-auto max-w-4xl mt-8 md:columns-3 gap-8 [column-fill:_balance] box-border mx-auto ">
-        {loading ? (
-          <div className="w-full ">Loading...</div>
-        ) : (
-          images.map((image, idx) => (
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <section className="sm:columns-2 w-auto max-w-8xl mt-8 md:columns-3 lg:columns-4 gap-8 [column-fill:_balance] box-border mx-auto ">
+          {images.map((image, idx) => (
             <div
-              className="group relative my-8 flex flex-col items-center justify-center flex-nowrap hover:cursor-pointer"
+              className="group relative mb-8 flex flex-col items-center justify-center flex-nowrap hover:cursor-pointer"
               key={idx}
               onClick={() => window.open(image.link, "_blank")}
             >
@@ -86,13 +88,17 @@ export default function Home() {
               />
               {/* Overlay */}
               <div className="group-hover:block hidden bg-gradient-to-b from-transparent to-black/70 absolute w-full h-full"></div>
-              <span className="group-hover:block absolute w-full overflow-clip hidden bottom-0 text-sm text-center mt-2">
-                {image.title || "No title"}
-              </span>
+
+              <div className="group-hover:flex flex-col absolute w-full overflow-clip hidden bottom-0 text-sm mt-2">
+                <span className="text-slate-200">
+                  {new Date(image.published).toLocaleDateString() || ""}
+                </span>
+                <span>{image.title || "No title"}</span>
+              </div>
             </div>
-          ))
-        )}
-      </section>
+          ))}
+        </section>
+      )}
     </main>
   );
 }
