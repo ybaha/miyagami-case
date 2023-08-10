@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-2 sm:p-24 ${inter.className}`}
+      className={`flex min-h-screen flex-col items-center p-2 sm:p-24 ${inter.className}`}
     >
       {/* Used form for better accessibility */}
       <form
@@ -71,36 +71,36 @@ export default function Home() {
           </button>
         </div>
       </form>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <section className="sm:columns-2 w-auto max-w-8xl mt-8 md:columns-3 lg:columns-4 gap-8 [column-fill:_balance] box-border mx-auto ">
-          {images.map((image, idx) => (
-            <div
-              className="group relative mb-8 flex flex-col items-center justify-center flex-nowrap hover:cursor-pointer"
-              key={idx}
-              onClick={() => window.open(image.link, "_blank")}
-            >
-              <Image
-                src={image.link}
-                alt={image.title}
-                width={300}
-                height={300}
-                className="rounded-md"
-              />
-              {/* Overlay */}
-              <div className="group-hover:block hidden bg-gradient-to-b from-transparent to-black/70 absolute w-full h-full"></div>
-
-              <div className="group-hover:flex flex-col absolute w-full overflow-clip hidden bottom-0 text-sm mt-2">
-                <span className="text-slate-200">
-                  {new Date(image.published).toLocaleDateString() || ""}
-                </span>
-                <span>{image.title || "No title"}</span>
-              </div>
-            </div>
-          ))}
-        </section>
+      {loading && <div className="mt-16 ">Loading...</div>}
+      {images.length === 0 && !loading && (
+        <div className="mt-16 ">No images found</div>
       )}
+      <section className="sm:columns-2 w-auto max-w-8xl mt-8 md:columns-3 lg:columns-4 gap-8 [column-fill:_balance] box-border mx-auto ">
+        {images.map((image, idx) => (
+          <div
+            className="group relative mb-8 flex flex-col items-center justify-center flex-nowrap hover:cursor-pointer"
+            key={idx}
+            onClick={() => window.open(image.link, "_blank")}
+          >
+            <Image
+              src={image.link}
+              alt={image.title}
+              width={300}
+              height={300}
+              className="rounded-md"
+            />
+            {/* Overlay */}
+            <div className="group-hover:block hidden bg-gradient-to-b from-transparent to-black/70 absolute w-full h-full"></div>
+
+            <div className="group-hover:flex flex-col absolute w-full overflow-clip hidden bottom-0 text-sm mt-2">
+              <span className="text-slate-200">
+                {new Date(image.published).toLocaleDateString() || ""}
+              </span>
+              <span>{image.title || "No title"}</span>
+            </div>
+          </div>
+        ))}
+      </section>
     </main>
   );
 }

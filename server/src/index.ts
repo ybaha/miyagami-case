@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import "dotenv/config";
 import router from "./routes";
 import cors from "cors";
-// Used MVC pattern for potential future scalability,
+// Used MVC pattern for potential future scalability (which is unlikely to happen in this case :))
 // even though it was an overkill for this project
 
 const app: Application = express();
